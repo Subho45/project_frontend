@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db'); // Assuming this exports your MySQL connection
+const db = require('../db'); // db should export a MySQL connection
 
 router.post('/', (req, res) => {
   const { name, email, message } = req.body;
@@ -12,14 +12,14 @@ router.post('/', (req, res) => {
   const sql = 'INSERT INTO users (name, email, message) VALUES (?, ?, ?)';
   db.query(sql, [name, email, message], (err, result) => {
     if (err) {
-      console.error('Database error:', err);
-      return res.status(500).json({ error: 'Failed to send message' });
+      console.error('DB Error:', err);
+      return res.status(500).json({ error: 'Database insert failed' });
     }
-
     res.status(200).json({ message: 'Message sent successfully!' });
   });
 });
 
 module.exports = router;
+
 
 
